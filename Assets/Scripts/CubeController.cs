@@ -16,3 +16,4 @@ public class CubeController : MonoBehaviour {
 	void Update () {
 
 }
+}

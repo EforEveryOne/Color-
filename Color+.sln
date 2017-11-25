@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorPlus2", "Assembly-CSharp.csproj", "{F1EEF5A5-EAB7-6B53-392A-ECCC81795498}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Color+", "Assembly-CSharp.csproj", "{FB1497E3-91EE-FCF2-0B33-E87B9278CF51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F1EEF5A5-EAB7-6B53-392A-ECCC81795498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1EEF5A5-EAB7-6B53-392A-ECCC81795498}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1EEF5A5-EAB7-6B53-392A-ECCC81795498}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1EEF5A5-EAB7-6B53-392A-ECCC81795498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB1497E3-91EE-FCF2-0B33-E87B9278CF51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB1497E3-91EE-FCF2-0B33-E87B9278CF51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB1497E3-91EE-FCF2-0B33-E87B9278CF51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB1497E3-91EE-FCF2-0B33-E87B9278CF51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
