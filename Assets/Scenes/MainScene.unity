@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 1518863245312862, guid: 9926369316b2d7e479488c625c636eb1, type: 2}
+  nextCubePrefab: {fileID: 0}
 --- !u!4 &722798970
 Transform:
   m_ObjectHideFlags: 0
