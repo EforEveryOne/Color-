@@ -114,28 +114,8 @@ public class GameController : MonoBehaviour {
 
 	void AddBlackCube() {
 		GameObject whiteCube = FindAvailableCube ();
-		SetCubeColor (whiteCube, nextCube.GetComponent<Renderer> ().material.color);
-
-		if (whiteCube == null) {
-			EndGame (false);
-		}
-		else {
-			// set the chosen cube to black
-			whiteCube.GetComponent<Renderer> ().material.color = Color.black;
-		}
-		//SetCubeColor (whiteCube, Color.black);
+		SetCubeColor (whiteCube, Color.black);
 	}
-
-
-
-
-
-
-
-
-
-
-
 
 
 	void ProcessKeyboardInput () {
