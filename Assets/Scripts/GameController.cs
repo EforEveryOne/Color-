@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	int turnCounter = 0;
 	Color[] myColors = { Color.blue, Color.red, Color.green, Color.yellow, Color.magenta };
 	int score = 0;
+	GameObject activeCube = null;
 
 
 	// Use this for initialization
@@ -148,7 +149,35 @@ public class GameController : MonoBehaviour {
 
 
 
+	public void ProcessClick (GameObject clickedCube, int x, int y, Color cubeColor, bool active) {
 
+		//checks the color of cube, nothing happens if white or black.
+		if (cubeColor != Color.white && cubeColor != Color.black) {
+
+			// if the specific cube is an active cube
+			if (active) {
+				//deactivate it
+				clickedCube.transform.localScale /= 1.5f;
+				clickedCube.GetComponent<CubeController>().active = false;
+				activeCube = null;
+			}
+			// the cube is not an active cube
+			else {
+				//deactivate previous cube
+				if (activeCube != null) {
+					activeCube.transform.localScale /= 1.5f;
+					activeCube.GetComponent<CubeController>().active = false;
+				}
+
+				//activate it
+				clickedCube.transform.localScale *= 1.5f;
+				clickedCube.GetComponent<CubeController>().active = true;
+				activeCube = clickedCube;
+			
+			}
+		}
+		print ("click detected: " + x + ", " + y);
+	}
 
 	
 	// Update is called once per frame
