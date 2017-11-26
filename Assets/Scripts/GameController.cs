@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour {
 	Color[] myColors = { Color.blue, Color.red, Color.green, Color.yellow, Color.magenta };
 	int score = 0;
 	GameObject activeCube = null;
+	int rainbowPoints = 5;
+	int sameColorPoints = 10;
 
 
 	// Use this for initialization
@@ -41,9 +43,9 @@ public class GameController : MonoBehaviour {
 
 
 	void CreateNextCube () {
-		if (nextCube == null) {
+	//	if (nextCube == null) {
 			nextCube = Instantiate (nextCubePrefab, nextCubePos, Quaternion.identity);
-		}
+		//}
 		nextCube.GetComponent<Renderer> ().material.color = myColors [Random.Range (0, myColors.Length)];
 	}
 
@@ -92,7 +94,7 @@ public class GameController : MonoBehaviour {
 		return PickWhiteCube (whiteCubes);
 	}
 		
-
+	//does a lot more than just setting the color
 	//set cube color or end game
 	void SetCubeColor (GameObject myCube, Color color) {
 		//no available cube in that row
@@ -196,10 +198,65 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-	
+
+	bool IsRainbowPlus (int x, int y) {
+		Color a = grid [x, y].GetComponent<Renderer> ().material.color = Color.black;
+		Color b = grid [x+1, y].GetComponent<Renderer> ().material.color = Color.black;
+		Color c = grid [x-1, y].GetComponent<Renderer> ().material.color = Color.black;
+		Color d = grid [x, y+1].GetComponent<Renderer> ().material.color = Color.black;
+		Color e = grid [x, y-1].GetComponent<Renderer> ().material.color = Color.black;
+		return false;
+	}
+
+	bool IsSameColorPlus (int x, int y) {
+		if (grid [x, y].GetComponent<Renderer> ().material.color ==	grid [x+1, y].GetComponent<Renderer> ().material.color &&
+			grid [x, y].GetComponent<Renderer> ().material.color ==	grid [x-1, y].GetComponent<Renderer> ().material.color &&
+			grid [x, y].GetComponent<Renderer> ().material.color ==	grid [x, y+1].GetComponent<Renderer> ().material.color &&
+			grid [x, y].GetComponent<Renderer> ().material.color ==	grid [x, y-1].GetComponent<Renderer> ().material.color) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	void MakeBlackPlus (int x, int y) {
+		//this is an error check to ensure that the x and y aren't on the edge of the grid. (shouldn't show up on the edge regardless)
+		if (x == 0 || y == 0 || x == gridX -1 || y == gridY -1){
+			return;
+		}
+		grid [x, y].GetComponent<Renderer> ().material.color = Color.black;
+		grid [x+1, y].GetComponent<Renderer> ().material.color = Color.black;
+		grid [x-1, y].GetComponent<Renderer> ().material.color = Color.black;
+		grid [x, y+1].GetComponent<Renderer> ().material.color = Color.black;
+		grid [x, y-1].GetComponent<Renderer> ().material.color = Color.black;
+	}
+
+
+	void Score (){
+		
+
+		//checks grid for plusses but not the edges.
+		for (int x = 1; x < gridX - 1; x++) {
+			for (int y = 1; y < gridY - 1; y++){
+
+				if (IsRainbowPlus (x, y)) {
+					score += rainbowPoints;
+					MakeBlackPlus(x, y);
+				}
+				if (IsSameColorPlus (x, y)) {
+					score += sameColorPoints;
+					MakeBlackPlus(x, y);
+		    	}
+	    	}
+    	}
+	}
+
 	// Update is called once per frame
 	void Update () {
 		ProcessKeyboardInput ();
+
+		Score ();
 
 		if (Time.time > turnTime * turnCounter) {
 			turnCounter++;
