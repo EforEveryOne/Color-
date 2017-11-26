@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 	public GameObject cubePrefab;
+	public Text scoreText;
+	public Text nextCubeText;
 	float gameLength = 60;
 	int gridX = 8;
 	int gridY = 5;
@@ -18,7 +22,7 @@ public class GameController : MonoBehaviour {
 	GameObject activeCube = null;
 	int rainbowPoints = 5;
 	int sameColorPoints = 10;
-
+	bool gameOver = false;
 
 	// Use this for initialization
 	void Start () {
@@ -49,11 +53,25 @@ public class GameController : MonoBehaviour {
 	// Ends the game, called when end game conditions are met.
 	void EndGame (bool win) {
 		if (win) {
-			print ("You won the game!");
+			//win
+			nextCubeText.text = "You won the game!";
 		}
 		else {
-			print ("Oh no! You lost! Please try again.");
+			//lose
+			nextCubeText.text = "You lost. Try again.";
 		}
+		//make sure no next cube
+		Destroy (nextCube);
+		nextCube = null;
+
+
+		//disable everything (make it nextCube but nextCube can't be clicked!
+		for (int x = 0; x < gridX; x++){
+			for (int y = 0; y < gridY; y++){
+				grid [x, y].GetComponent<CubeController> ().nextCube = true;
+		}
+		gameOver = true;
+	}
 	}
 		
 
@@ -286,20 +304,47 @@ public class GameController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		ProcessKeyboardInput ();
 
-		Score ();
 
-		if (Time.time > turnTime * turnCounter) {
-			turnCounter++;
+		// if there is time left in the game
+		if (Time.time < gameLength) { 
 
-			// if we still have an exisiting next cube when the turn passes
-			if (nextCube != null) {
-				score -= 1;
-				AddBlackCube ();
-			//	FailToPlaceNextCube ();
+			ProcessKeyboardInput ();
+			Score ();
+
+			if (Time.time > turnTime * turnCounter) {
+				turnCounter++;
+
+				// if we still have an exisiting next cube when the turn passes
+				if (nextCube != null) {
+					score -= 1;
+
+					//keep score above negative
+					if (score < 0) {
+						score = 0;
+					}
+					AddBlackCube ();
+				}
+				CreateNextCube ();
+			}	
+
+			// update Score UI
+
+			scoreText.text = "Score: " + score;
+		}
+
+
+		//game is over, time is up
+		else if (!gameOver) {
+			// players win if score is greater than 0 when time is up
+			if (score > 0) {
+				EndGame (true);
 			}
-			CreateNextCube ();
-		}	
+			else {
+				EndGame (false);
+			}
+		}
+
+
 	}
 	}
