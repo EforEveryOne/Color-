@@ -11,13 +11,10 @@ public class CubeController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		myGameController = GameObject.Find ("GameControllerObject").GetComponent<GameController> ();
-	
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
 }
 
 	void OnMouseDown () {

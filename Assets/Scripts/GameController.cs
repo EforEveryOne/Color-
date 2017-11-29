@@ -8,7 +8,16 @@ public class GameController : MonoBehaviour {
 	public GameObject cubePrefab;
 	public Text scoreText;
 	public Text nextCubeText;
-	float gameLength = 60;
+	public Text timerText;
+
+
+	//count down timer
+
+	static float gameLength = 60;
+	int oneSecond = -1;
+
+	float timerCountDown = gameLength ;
+
 	int gridX = 8;
 	int gridY = 5;
 	GameObject[,] grid;
@@ -23,6 +32,9 @@ public class GameController : MonoBehaviour {
 	int rainbowPoints = 5;
 	int sameColorPoints = 10;
 	bool gameOver = false;
+
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -64,7 +76,6 @@ public class GameController : MonoBehaviour {
 		Destroy (nextCube);
 		nextCube = null;
 
-
 		//disable everything (make it nextCube but nextCube can't be clicked!
 		for (int x = 0; x < gridX; x++){
 			for (int y = 0; y < gridY; y++){
@@ -74,7 +85,6 @@ public class GameController : MonoBehaviour {
 	}
 	}
 		
-
 	GameObject PickWhiteCube (List<GameObject> whiteCubes) {
 		if (whiteCubes.Count == 0) {
 			// error value
@@ -119,9 +129,7 @@ public class GameController : MonoBehaviour {
 			nextCube = null;
 		}	
 	}
-
-
-
+		
 	void PlaceNextCube (int y) {
 		GameObject whiteCube = FindAvailableCube (y);
 		SetCubeColor (whiteCube, nextCube.GetComponent<Renderer> ().material.color);
@@ -133,8 +141,7 @@ public class GameController : MonoBehaviour {
 		// use a color value that is beyond max
 		SetCubeColor (whiteCube, Color.black);
 	}
-
-
+		
 	void ProcessKeyboardInput () {
 		int numKeyPressed = 0;
 
@@ -162,9 +169,6 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
-
-
-
 	public void ProcessClick (GameObject clickedCube, int x, int y, Color cubeColor, bool active) {
 
 		//checks the color of cube, nothing happens if white or black.
@@ -189,7 +193,6 @@ public class GameController : MonoBehaviour {
 				clickedCube.transform.localScale *= 1.5f;
 				clickedCube.GetComponent<CubeController> ().active = true;
 				activeCube = clickedCube;
-			
 			}
 		}
 		else if (cubeColor == Color.white && activeCube != null) {
@@ -212,7 +215,6 @@ public class GameController : MonoBehaviour {
 			}
 		}
 	}
-
 
 	bool IsRainbowPlus (int x, int y) {
 		Color a = grid [x, y].GetComponent<Renderer> ().material.color;
@@ -239,10 +241,6 @@ public class GameController : MonoBehaviour {
 		} else {
 			return false;
 		}
-
-		
-
-	
 	}
 
 	bool IsSameColorPlus (int x, int y) {
@@ -278,14 +276,11 @@ public class GameController : MonoBehaviour {
 			activeCube.transform.localScale /= 1.5f;
 			activeCube.GetComponent<CubeController> ().active = false;
 			activeCube = null;
-
 		}
 	}
 
-
 	void Score (){
 		
-
 		//checks grid for plusses but not the edges.
 		for (int x = 1; x < gridX - 1; x++) {
 			for (int y = 1; y < gridY - 1; y++){
@@ -306,11 +301,22 @@ public class GameController : MonoBehaviour {
 	void Update () {
 
 
+
+
 		// if there is time left in the game
-		if (Time.time < gameLength) { 
+		if (Time.time <= gameLength) { 
 
 			ProcessKeyboardInput ();
 			Score ();
+
+
+			if (Time.time > oneSecond ) {
+				oneSecond++;
+				timerText.text = "Time: " + timerCountDown;
+				timerCountDown--;
+			}
+
+
 
 			if (Time.time > turnTime * turnCounter) {
 				turnCounter++;
@@ -329,11 +335,9 @@ public class GameController : MonoBehaviour {
 			}	
 
 			// update Score UI
-
 			scoreText.text = "Score: " + score;
 		}
-
-
+			
 		//game is over, time is up
 		else if (!gameOver) {
 			// players win if score is greater than 0 when time is up
@@ -344,7 +348,5 @@ public class GameController : MonoBehaviour {
 				EndGame (false);
 			}
 		}
-
-
 	}
 	}
